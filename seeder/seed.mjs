@@ -19,14 +19,14 @@ mongoose
 
 const userSeeds = [
   {
-    name: "passerby_a",
-    email: "passerby_a@passerby.com",
+    name: "justus_a",
+    email: "justus_a@passerby.com",
     password: hash,
     postal: "01"
   },
   {
-    name: "passerby_b",
-    email: "passerby_b@passerby.com",
+    name: "justus_b",
+    email: "justus_b@passerby.com",
     password: hash,
     postal: "03"
   },
