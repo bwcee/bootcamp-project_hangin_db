@@ -19,7 +19,7 @@ const userSchema = new Schema(
       trim: true,
     },
     password: { type: String, required: true, trim: true },
-    pic: { type: Buffer },
+    pic: { type: Buffer }, // create public folder and use path to the image
     bio: { type: String, lowercase: true, trim: true },
     payment: { type: String, lowercase: true, trim: true },
     postal: {
@@ -113,7 +113,7 @@ const userSchema = new Schema(
         message: "{VALUE} is not a valid postal code",
       },
     },
-    requests: { type: Schema.Types.ObjectId, ref: "Task" },
+    requests: [{ type: Schema.Types.ObjectId, ref: "Task" }],
   },
   { timestamps: true }
 );
