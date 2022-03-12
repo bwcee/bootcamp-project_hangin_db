@@ -19,18 +19,27 @@ mongoose
 
 const userSeeds = [
   {
-    name: "justus_a",
-    email: "justus_a@passerby.com",
+    name: "justus",
+    email: "justus@passerby.com",
     password: hash,
+    bio: "this is justus bio sentence.",
     postal: "01"
   },
   {
-    name: "justus_b",
-    email: "justus_b@passerby.com",
+    name: "gary",
+    email: "gary@passerby.com",
     password: hash,
+    bio: "this is gary's bio sentence.",
     postal: "03"
   },
-   ];
+  {
+    name: "boon wee",
+    email: "bw@passerby.com",
+    password: hash,
+    bio: "this is bw's bio sentence.",
+    postal: "05"
+  },
+  ];
 
 /* 
 1. use deleteMany to delete all prev records first b4 seeding 
