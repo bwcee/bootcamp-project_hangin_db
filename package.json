@@ -5,7 +5,8 @@
   "main": "index.mjs",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "seed": "node seeder/seed.mjs"
+    "seed": "node seeder/seed.mjs",
+    "start": "nodemon index.mjs"
   },
   "keywords": [],
   "author": "",

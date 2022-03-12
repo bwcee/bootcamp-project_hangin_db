@@ -9,7 +9,7 @@ dotenv.config();
 const { SALT, DATABASE_URL, FRONTEND_URL, PORT } = process.env;
 /* 
 1. this is all tt is needed to create connection to our db 
-2. the funky syntax in console.log/err just to print out in color so easier to see
+2. the funky syntax in console.log/error just to print out in color so easier to see
 */
 mongoose
   .connect(DATABASE_URL)
@@ -20,17 +20,16 @@ mongoose
     console.error("\x1b[41m%s\x1b[0m", "error connecting to mongodb!!");
     console.error("\x1b[41m%s\x1b[0m", err);
   });
-/* 
-1. unlike sequelize, no need ./models/index.js to create and export db  
-2. just need to import models here
-3. from mongoose docs: "Every model has an associated connection. When you use mongoose.model(), your model will use the default mongoose connection."
-the default connection is on line 8: mongoose.connect("mongodb://localhost:27017/zoom_dev")
-*/
+/* import models */
+import User from "./models/User.mjs";
+import Task from "./models/Task.mjs";
+import Chat from "./models/Chat.mjs";
 
 /* import routes & controllers */
-
+import signRoutes from "./routes/signRoutes.mjs";
+import SignController from "./controllers/signCtrl.mjs";
 /* initiate/create instance of controllers & pass in models and SALT so can do jwt verification*/
-
+const signControl = new SignController(User, SALT);
 /* initialise express instance */
 const app = express();
 
@@ -48,7 +47,7 @@ app.use(
 app.use(express.static("public"));
 
 /* make use of defined routes */
-// app.use("/", homeRoutes(homeControl));
+app.use("/", signRoutes(signControl));
 /* middleware placed here so all routes below will haf to be verified first*/
 app.use(verifyToken());
 // app.use("/class", klassRoutes(klassControl));
