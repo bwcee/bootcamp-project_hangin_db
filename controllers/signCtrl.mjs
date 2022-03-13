@@ -8,29 +8,33 @@ export default class HomeController extends BaseController {
     super(model, salt);
   }
 
-
   async doLogIn(req, res) {
     const { email, password } = req.body;
     try {
       const user = await this.model.findOne({ email });
       if (!user) {
-        res.send("null");
+        throw Error;
       } else {
         const logInSuccess = await bcrypt.compare(password, user.password);
-
-        if (logInSuccess) {
-          const payload = {
-            _id: user._id,
-            name: user.name,
-          };
-          const token = jwt.sign(payload, this.salt, { expiresIn: "6h" });
-          res.send(token);
-        } else {
-          res.send("null");
+        if (!logInSuccess) {
+          throw Error;
         }
+        const token = jwt.sign({}, this.salt, { expiresIn: "6h" });
+        const result = {
+          id: user._id,
+          name: user.name,
+          email: user.email,
+          postal: user.postal,
+          pic: user.pic,
+          bio: user.bio,
+          requests: user.requests,
+          token,
+        };
+        res.send(result);
       }
     } catch (err) {
-      this.errorHandler(err, res);
+      const msg = "Either email does not exist or password is incorrect";
+      this.errorHandler(err, msg, res);
     }
   }
 
@@ -38,7 +42,7 @@ export default class HomeController extends BaseController {
     const { name, email, password, postal } = req.body;
     try {
       const hashedPass = bcrypt.hashSync(password, 8);
-      
+
       const newUser = await this.model.create({
         name,
         email,
@@ -47,19 +51,28 @@ export default class HomeController extends BaseController {
       });
       /* can't think of a situation where newUser wld be null... but oh well... guess additional chk doesn't hurt */
       if (!newUser) {
-        res.send("null");
+        throw Error;
       } else {
-        const payload = {
-          _id: newUser._id,
+        const token = jwt.sign({}, this.salt, { expiresIn: "6h" });
+        const result = {
+          id: newUser._id,
           name: newUser.name,
+          email: newUser.email,
+          postal: newUser.postal,
+          token,
         };
-        const token = jwt.sign(payload, this.salt, { expiresIn: "6h" });
-        res.send(token);
+        res.send(result);
       }
     } catch (err) {
-      this.errorHandler(err, res);
+      let msg;
+      if (err.code == 11000) {
+        msg = "Email already in use, pls try again";
+      } else {
+        msg = "Something went wrong with the sign-up, pls try again later";
+      }
+      this.errorHandler(err, msg, res);
     }
   }
 }
 
-/* there is no doLogOut required since logging out is simply removing token from local storage. so logging out done completely in front end at src/login.jsx wo any need for back end work here */
+/* there is no doLogOut required since logging out is simply resetting store state at frontend. so no need for back end work here */
