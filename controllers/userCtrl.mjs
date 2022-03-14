@@ -1,8 +1,7 @@
 import BaseController from "./baseCtrl.mjs";
-import { resolve } from "path";
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
-import express from "express";
+import fs from "fs";
+/* __dirname used for deleting old profile pics below. instead of redefining it, just import from index.mjs */
+import { __dirname } from "./../index.mjs";
 
 export default class UserController extends BaseController {
   constructor(model, salt) {
@@ -27,11 +26,19 @@ export default class UserController extends BaseController {
 
     try {
       const currentUser = await this.model.findOne({ _id: id });
+      const oldPic = currentUser.pic;
+      /* delete old profile pic if exists */
+      if (oldPic) {
+        fs.unlink(`${__dirname}/public/pics/${oldPic}`, (err) => {
+          if (err) console.log(err);
+        });
+      }
       currentUser.pic = req.file.originalname;
       await currentUser.save();
       res.send(currentUser.pic);
     } catch (err) {
-      const msg = "Something went wrong with the upload, pls login and try again";
+      const msg =
+        "Something went wrong with the upload, pls login and try again";
       this.errorHandler(err, msg, res);
     }
   }
