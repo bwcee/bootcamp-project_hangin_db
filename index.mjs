@@ -56,13 +56,11 @@ app.use(express.static("public"));
 
 /* make use of defined routes */
 app.use("/", signRoutes(signControl));
-
-app.use('/user', userRoutes(userControl));
-
 app.use('/task', taskRoutes(taskControl));
 /* middleware placed here so all routes below will haf to be verified first*/
-// app.use(verifyToken());
-// app.use("/class", klassRoutes(klassControl));
+app.use(verifyToken());
+app.use('/user', userRoutes(userControl));
+
 
 // Set Express to listen on the given port
 app.listen(PORT || 3004, () => {
