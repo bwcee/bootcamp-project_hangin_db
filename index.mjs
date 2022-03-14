@@ -7,6 +7,11 @@ import verifyToken from "./middlewares/auth.mjs";
 import dotenv from "dotenv";
 dotenv.config();
 const { SALT, DATABASE_URL, FRONTEND_URL, PORT } = process.env;
+/* __dirname does not work in ES6 file type, so need additional imports below  */
+import { dirname } from "path";
+import { fileURLToPath } from "url";
+export const __dirname = dirname(fileURLToPath(import.meta.url));
+
 /* 
 1. this is all tt is needed to create connection to our db 
 2. the funky syntax in console.log/error just to print out in color so easier to see
@@ -49,6 +54,8 @@ app.use(
 
 /* expose files stored in public folder */
 app.use(express.static("public"));
+/* exposes ./public/pics folder (https://www.tutorialsteacher.com/nodejs/serving-static-files-in-nodejs) */
+app.use('/pics',express.static(__dirname + '/pics'))
 
 /* make use of defined routes */
 app.use("/", signRoutes(signControl));
