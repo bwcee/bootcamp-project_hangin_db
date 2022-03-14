@@ -23,7 +23,16 @@ export default class UserController extends BaseController {
   }
 
   async updateProfilePic(req, res) {
-    console.log(req.body);
-    res.send(req.body);
+    const { id } = req.body;
+
+    try {
+      const currentUser = await this.model.findOne({ _id: id });
+      currentUser.pic = req.file.originalname;
+      await currentUser.save();
+      res.send(currentUser.pic);
+    } catch (err) {
+      const msg = "Something went wrong with the upload, pls login and try again";
+      this.errorHandler(err, msg, res);
+    }
   }
 }
