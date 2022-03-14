@@ -19,7 +19,7 @@ const userSchema = new Schema(
       trim: true,
     },
     password: { type: String, required: true, trim: true },
-    pic: { type: Buffer }, // create public folder and use path to the image
+    pic: { type: String }, 
     bio: { type: String, lowercase: true, trim: true },
     payment: { type: String, lowercase: true, trim: true },
     postal: {
