@@ -31,9 +31,13 @@ import SignController from "./controllers/signCtrl.mjs";
 
 import userRoutes from "./routes/userRoutes.mjs";
 import UserController from "./controllers/userCtrl.mjs";
+
+import taskRoutes from "./routes/taskRoutes.mjs";
+import TaskController from "./controllers/taskCtrl.mjs";
 /* initiate/create instance of controllers & pass in models and SALT so can do jwt verification*/
 const signControl = new SignController(User, SALT);
 const userControl = new UserController(User, SALT);
+const taskControl = new TaskController(Task, SALT);
 /* initialise express instance */
 const app = express();
 
@@ -54,6 +58,8 @@ app.use(express.static("public"));
 app.use("/", signRoutes(signControl));
 
 app.use('/user', userRoutes(userControl));
+
+app.use('/task', taskRoutes(taskControl));
 /* middleware placed here so all routes below will haf to be verified first*/
 // app.use(verifyToken());
 // app.use("/class", klassRoutes(klassControl));
