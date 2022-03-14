@@ -59,18 +59,14 @@ app.use(
 /* expose files stored in public folder */
 app.use(express.static("public"));
 /* exposes ./public/pics folder (https://www.tutorialsteacher.com/nodejs/serving-static-files-in-nodejs) */
-app.use('/pics',express.static(__dirname + '/pics'))
+app.use('/pics', express.static(__dirname + '/pics'))
 
 /* make use of defined routes */
 app.use("/", signRoutes(signControl));
-
-app.use('/user', userRoutes(userControl));
-
+app.use('/task', taskRoutes(taskControl));
 /* middleware placed here so all routes below will haf to be verified first*/
 app.use(verifyToken());
 app.use('/user', userRoutes(userControl));
-
-app.use('/task', taskRoutes(taskControl));
 
 // Set Express to listen on the given port
 app.listen(PORT || 3004, () => {
