@@ -8,18 +8,18 @@ export default class UserController extends BaseController {
     super(model, salt);
   }
 
-  async getProfile(req, res) {
-    const email = "justus@passerby.com";
-    try {
-      const profile = await this.model.findOne({ email });
-      console.log(profile);
-      if (profile) {
-        res.send(profile);
-      }
-    } catch (err) {
-      this.errorHandler(err, res);
-    }
-  }
+  // async getProfile(req, res) {
+  //   const email = "justus@passerby.com";
+  //   try {
+  //     const profile = await this.model.findOne({ email });
+  //     console.log(profile);
+  //     if (profile) {
+  //       res.send(profile);
+  //     }
+  //   } catch (err) {
+  //     this.errorHandler(err, res);
+  //   }
+  // }
 
   async updateProfilePic(req, res) {
     const { id } = req.body;
@@ -39,6 +39,18 @@ export default class UserController extends BaseController {
     } catch (err) {
       const msg =
         "Something went wrong with the upload, pls login and try again";
+      this.errorHandler(err, msg, res);
+    }
+  }
+
+  async updateName(req, res) {
+    const { id, name } = req.body;
+
+    try {
+      const currentUser = await this.model.findOneAndUpdate({_id: id}, {name: name}, {new: true});
+      res.send(currentUser);
+    } catch (err) {
+      const msg = "Something went wrong with the update, pls login and try again";
       this.errorHandler(err, msg, res);
     }
   }

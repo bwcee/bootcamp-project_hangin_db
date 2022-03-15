@@ -22,5 +22,10 @@ export default function userRouteFunc(controller) {
     controller.updateProfilePic.bind(controller)
   );
 
+  userRouters.put("/name", controller.updateName.bind(controller));
+  // userRouters.put("/email", multerUpload.none(), controller.updateEmail.bind(controller));
+  // userRouters.put("/bio", multerUpload.none(), controller.updateBio.bind(controller));
+  // userRouters.put("/postal", multerUpload.none(), controller.updatePostal.bind(controller));
+
   return userRouters;
 }
