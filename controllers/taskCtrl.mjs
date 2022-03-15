@@ -33,13 +33,21 @@ export default class TaskController extends BaseController {
   }
 
   async getAllTask(req, res) {
-    const { id } = req.body
-    console.log("backend data received", req.body)
+    const { id } = req.params
+    console.log("backend data received", req.params)
+    console.log('id', id)
     try {
-      const getTask = await this.model.find({
+      // const getAllTask = await this.model.find({})
+      //   .where("owner")
+      //   .equals("622db2baeacc3adf8bb0430f")
+      //   .exec();
+
+      // console.log(getAllTask)
+      const getOwnerTask = await this.model.find({
         owner: id
       })
-      res.send(getTask);
+      console.log(getOwnerTask)
+      res.send(getOwnerTask);
 
     } catch (err) {
       this.errorHandler(err)

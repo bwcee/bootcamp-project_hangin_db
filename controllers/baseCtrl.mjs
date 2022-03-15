@@ -5,8 +5,8 @@ export default class BaseController {
   }
   /* funny looking codes are to highlight error msg in terminal in red */
   errorHandler = (err, msg, res) => {
-    console.error("\x1b[41m%s\x1b[0m","Error you doofus!");
+    console.error("\x1b[41m%s\x1b[0m", "Error you doofus!");
     console.error("\x1b[31m%s\x1b[0m", err)
-    res.send({err: msg});
+    res.send({ err: msg });
   };
 }
