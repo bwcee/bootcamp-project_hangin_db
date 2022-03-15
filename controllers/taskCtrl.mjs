@@ -51,4 +51,21 @@ export default class TaskController extends BaseController {
       this.errorHandler(err);
     }
   }
+
+  async getPartnerTasks(req, res) {
+    const { id } = req.params;
+    try {
+      const partnerTasks = await this.model
+        .find({
+          partner: id,
+          completed: false,
+        })
+        .populate({ path: "owner", select: "_id name" })
+        .exec();
+
+      res.send(partnerTasks);
+    } catch (err) {
+      this.errorHandler(err);
+    }
+  }
 }
