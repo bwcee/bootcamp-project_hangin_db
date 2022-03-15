@@ -15,7 +15,6 @@ export default class TaskController extends BaseController {
       taskDescription,
       taskTag,
       rewardsPenalty,
-      partner,
       dateTime,
     } = req.body;
 
@@ -25,7 +24,7 @@ export default class TaskController extends BaseController {
         description: taskDescription,
         taskTag,
         owner,
-        partner,
+        partner: null,
         endText: rewardsPenalty, // String for rewardsPenalty description
         financialPenalty, //Boolean value if financial penalty applied
         endApplied: false, // Default new task is false for reward/penalty
