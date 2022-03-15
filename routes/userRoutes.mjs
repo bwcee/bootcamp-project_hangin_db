@@ -23,9 +23,9 @@ export default function userRouteFunc(controller) {
   );
 
   userRouters.put("/name", controller.updateName.bind(controller));
-  // userRouters.put("/email", multerUpload.none(), controller.updateEmail.bind(controller));
-  // userRouters.put("/bio", multerUpload.none(), controller.updateBio.bind(controller));
-  // userRouters.put("/postal", multerUpload.none(), controller.updatePostal.bind(controller));
+  userRouters.put("/email", controller.updateEmail.bind(controller));
+  userRouters.put("/bio", controller.updateBio.bind(controller));
+  userRouters.put("/postal", controller.updatePostal.bind(controller));
 
   return userRouters;
 }

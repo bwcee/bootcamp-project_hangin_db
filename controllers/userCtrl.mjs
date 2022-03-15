@@ -47,10 +47,66 @@ export default class UserController extends BaseController {
     const { id, name } = req.body;
 
     try {
-      const currentUser = await this.model.findOneAndUpdate({_id: id}, {name: name}, {new: true});
+      const currentUser = await this.model.findOneAndUpdate(
+        { _id: id },
+        { name: name },
+        { new: true }
+      );
       res.send(currentUser);
     } catch (err) {
-      const msg = "Something went wrong with the update, pls login and try again";
+      const msg =
+        "Something went wrong with the update, pls login and try again";
+      this.errorHandler(err, msg, res);
+    }
+  }
+
+  async updateEmail(req, res) {
+    const { id, email } = req.body;
+
+    try {
+      const currentUser = await this.model.findOneAndUpdate(
+        { _id: id },
+        { email: email },
+        { new: true }
+      );
+      res.send(currentUser);
+    } catch (err) {
+      const msg =
+        "Something went wrong with the update, pls login and try again";
+      this.errorHandler(err, msg, res);
+    }
+  }
+
+  async updateBio(req, res) {
+    const { id, bio } = req.body;
+
+    try {
+      const currentUser = await this.model.findOneAndUpdate(
+        { _id: id },
+        { bio: bio },
+        { new: true }
+      );
+      res.send(currentUser);
+    } catch (err) {
+      const msg =
+        "Something went wrong with the update, pls login and try again";
+      this.errorHandler(err, msg, res);
+    }
+  }
+
+  async updatePostal(req, res) {
+    const { id, postal } = req.body;
+
+    try {
+      const currentUser = await this.model.findOneAndUpdate(
+        { _id: id },
+        { postal: postal },
+        { new: true }
+      );
+      res.send(currentUser);
+    } catch (err) {
+      const msg =
+        "Something went wrong with the update, pls login and try again";
       this.errorHandler(err, msg, res);
     }
   }
