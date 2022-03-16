@@ -54,7 +54,8 @@ export default class TaskController extends BaseController {
 
       res.send(getOwnerTask);
     } catch (err) {
-      this.errorHandler(err);
+      let msg = "";
+      this.errorHandler(err, msg, res);
     }
   }
 
@@ -74,7 +75,8 @@ export default class TaskController extends BaseController {
 
       res.send(partnerTasks);
     } catch (err) {
-      this.errorHandler(err);
+      let msg = "";
+      this.errorHandler(err, msg, res);
     }
   }
 
@@ -121,6 +123,20 @@ export default class TaskController extends BaseController {
       res.send(findTask);
     } catch (err) {
       this.errorHandler(err);
+    }
+  }
+
+  async partnerRequest(req, res) {
+    const { userId, taskId } = req.body;
+    try {
+      const task = await this.model.findById(taskId);
+      task.partner = userId;
+      task.partnerAccepted = "pending";
+      task.save();
+      console.log(task);
+    } catch (err) {
+      let msg = "";
+      this.errorHandler(err, msg, res);
     }
   }
 }
