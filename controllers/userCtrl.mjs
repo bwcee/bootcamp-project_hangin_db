@@ -8,22 +8,47 @@ export default class UserController extends BaseController {
     super(model, salt);
   }
 
-  // async getProfile(req, res) {
-  //   const email = "justus@passerby.com";
-  //   try {
-  //     const profile = await this.model.findOne({ email });
-  //     console.log(profile);
-  //     if (profile) {
-  //       res.send(profile);
-  //     }
-  //   } catch (err) {
-  //     this.errorHandler(err, res);
-  //   }
-  // }
+  async getUser(req, res) {
+    const { id } = req.params;
+    try {
+      const user = await this.model
+        .findById(id, "_id name pic bio postal requests")
+        .exec();
+      res.send(user);
+    } catch (err) {
+      let msg = "";
+      this.errorHandler(err, msg, res);
+    }
+  }
+
+  async getAllUsers(req, res) {
+    const { id } = req.params;
+    try {
+      const allUsers = await this.model
+        .find({ _id: { $ne: id } }, "_id name pic bio postal")
+        .exec();
+      res.send(allUsers);
+    } catch (err) {
+       let msg = "";
+      this.errorHandler(err, msg, res);
+    }
+  }
+
+  async addRequest(req, res) {
+    const { userId, taskId } = req.body;
+    try {
+      const user = await this.model.findById(userId);
+      user.requests.push(taskId);
+      user.save();
+      console.log(user);
+    } catch (err) {
+       let msg = "";
+      this.errorHandler(err, msg, res);
+    }
+  }
 
   async updateProfilePic(req, res) {
     const { id } = req.body;
-
     try {
       const currentUser = await this.model.findOne({ _id: id });
       const oldPic = currentUser.pic;

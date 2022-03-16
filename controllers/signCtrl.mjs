@@ -22,12 +22,6 @@ export default class HomeController extends BaseController {
         const token = jwt.sign({}, this.salt, { expiresIn: "6h" });
         const result = {
           id: user._id,
-          name: user.name,
-          email: user.email,
-          postal: user.postal,
-          pic: user.pic,
-          bio: user.bio,
-          requests: user.requests,
           token,
         };
         res.send(result);
@@ -56,9 +50,6 @@ export default class HomeController extends BaseController {
         const token = jwt.sign({}, this.salt, { expiresIn: "6h" });
         const result = {
           id: newUser._id,
-          name: newUser.name,
-          email: newUser.email,
-          postal: newUser.postal,
           token,
         };
         res.send(result);
