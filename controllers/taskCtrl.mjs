@@ -25,10 +25,11 @@ export default class TaskController extends BaseController {
         taskTag,
         owner,
         partner: null,
+        partnerAccepted: "false", // Default string value for new task as no partner request
         endText: rewardsPenalty, // String for rewardsPenalty description
         financialPenalty, //Boolean value if financial penalty applied
         endApplied: false, // Default new task is false for reward/penalty
-        endIndicated: false, // Default new task is false for task completion to partner
+        endIndicated: false, // Default boolean is false for task completion to partner
         completed: false, //Default new task is false for task completion - self
         completion: dateTime, //DateTime for task completion
       });
