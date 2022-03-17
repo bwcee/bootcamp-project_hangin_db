@@ -126,14 +126,16 @@ export default class TaskController extends BaseController {
     }
   }
 
+  /* generic partnerAccepted field update */
   async partnerRequest(req, res) {
-    const { userId, taskId } = req.body;
+    const { userId, taskId, status } = req.body;
     try {
       const task = await this.model.findById(taskId);
-      task.partner = userId;
-      task.partnerAccepted = "pending";
+      if (task.partner === null) {
+        task.partner = userId;
+      }
+      task.partnerAccepted = status;
       task.save();
-      console.log(task);
     } catch (err) {
       let msg = "";
       this.errorHandler(err, msg, res);
