@@ -7,6 +7,7 @@ export default function taskRouteFunc(controller) {
   taskRouters.get("/getAllTask/:id", controller.getAllTask.bind(controller));
   taskRouters.get("/PartnerTasks/:id", controller.getPartnerTasks.bind(controller));
   taskRouters.put("/partnerRequest", controller.partnerRequest.bind(controller));
+  taskRouters.put("/rejectCompletion", controller.rejectCompletion.bind(controller));
   taskRouters.post("/completeTask", controller.completeTask.bind(controller));
   return taskRouters;
 }

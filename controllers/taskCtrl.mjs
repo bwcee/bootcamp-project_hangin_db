@@ -141,4 +141,16 @@ export default class TaskController extends BaseController {
       this.errorHandler(err, msg, res);
     }
   }
+
+  async rejectCompletion(req, res) {
+    const { taskId } = req.body;
+    try {
+      const task = await this.model.findById(taskId);
+      task.endIndicated = false;
+      task.save();
+    } catch (err) {
+      let msg = "";
+      this.errorHandler(err, msg, res);
+    }
+  }
 }
