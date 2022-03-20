@@ -1,6 +1,8 @@
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
+/* socket.io imports */
+import { Server } from "socket.io";
 /* import verifyToken middleware */
 import verifyToken from "./middlewares/auth.mjs";
 /* get SALT here and pass it as argument to controllers below */
@@ -59,16 +61,41 @@ app.use(
 /* expose files stored in public folder */
 app.use(express.static("public"));
 /* exposes ./public/pics folder (https://www.tutorialsteacher.com/nodejs/serving-static-files-in-nodejs) */
-app.use('/pics', express.static(__dirname + '/pics'))
+app.use("/pics", express.static(__dirname + "/pics"));
 
 /* make use of defined routes */
 app.use("/", signRoutes(signControl));
-app.use('/task', taskRoutes(taskControl));
+app.use("/task", taskRoutes(taskControl));
 /* middleware placed here so all routes below will haf to be verified first*/
 app.use(verifyToken());
-app.use('/user', userRoutes(userControl));
+app.use("/user", userRoutes(userControl));
 
-// Set Express to listen on the given port
-app.listen(PORT || 3004, () => {
+/* 
+1. set app to listen on the given port 
+2. app.listen returns a HTTP server instance
+(https://stackoverflow.com/questions/17696801/express-js-app-listen-vs-server-listen)  
+*/
+const httpServerApp = app.listen(PORT || 3004, () => {
   console.log(`bckend server is running on ${PORT}`);
 });
+
+/* 
+1. io is an instance of socket, so just need to pass in the server created from app.listen above when creating io
+2. from docs, since Socket.IO v3, need to enable Cross-Origin Resource Sharing
+(https://socket.io/docs/v4/handling-cors/)
+*/
+const io = new Server(httpServerApp, {
+  cors: {
+    credentials: true,
+    origin: FRONTEND_URL,
+  },
+});
+
+/* application structure from (https://socket.io/docs/v3/server-application-structure/) */
+import chatHandlers from "./socketEventHandlers/chatHandlers.mjs";
+
+const onConnection = (socket) => {
+  chatHandlers(io, socket);
+};
+
+io.on("connection", onConnection);
