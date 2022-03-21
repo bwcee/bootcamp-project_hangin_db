@@ -12,8 +12,9 @@ export default class UserController extends BaseController {
     const { id } = req.params;
     try {
       const user = await this.model
-        .findById(id, "_id name pic bio postal requests")
+        .findById(id, "_id name email pic bio postal requests")
         .exec();
+      console.log("why no email?", user);
       res.send(user);
     } catch (err) {
       let msg = "";
@@ -29,7 +30,7 @@ export default class UserController extends BaseController {
         .exec();
       res.send(allUsers);
     } catch (err) {
-       let msg = "";
+      let msg = "";
       this.errorHandler(err, msg, res);
     }
   }
@@ -42,7 +43,7 @@ export default class UserController extends BaseController {
       user.save();
       console.log(user);
     } catch (err) {
-       let msg = "";
+      let msg = "";
       this.errorHandler(err, msg, res);
     }
   }
