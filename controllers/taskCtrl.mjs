@@ -48,9 +48,12 @@ export default class TaskController extends BaseController {
   async getAllTask(req, res) {
     const { id } = req.params;
     try {
-      const getOwnerTask = await this.model.find({
-        owner: id,
-      });
+      const getOwnerTask = await this.model
+        .find({
+          owner: id,
+        })
+        .populate({ path: "partner", select: "_id name pic" })
+        .exec();
 
       res.send(getOwnerTask);
     } catch (err) {
@@ -70,7 +73,7 @@ export default class TaskController extends BaseController {
           partner: id,
           completed: false,
         })
-        .populate({ path: "owner", select: "_id name" })
+        .populate({ path: "owner", select: "_id name pic" })
         .exec();
 
       res.send(partnerTasks);
