@@ -2,6 +2,7 @@ import BaseController from "./baseCtrl.mjs";
 import fs from "fs";
 /* __dirname used for deleting old profile pics below. instead of redefining it, just import from index.mjs */
 import { __dirname } from "./../index.mjs";
+import bcrypt from "bcrypt";
 
 export default class UserController extends BaseController {
   constructor(model, salt) {
@@ -14,7 +15,6 @@ export default class UserController extends BaseController {
       const user = await this.model
         .findById(id, "_id name email pic bio postal requests")
         .exec();
-      console.log("why no email?", user);
       res.send(user);
     } catch (err) {
       let msg = "";
@@ -130,6 +130,45 @@ export default class UserController extends BaseController {
         { new: true }
       );
       res.send(currentUser);
+    } catch (err) {
+      const msg =
+        "Something went wrong with the update, pls login and try again";
+      this.errorHandler(err, msg, res);
+    }
+  }
+
+  async updatePassword(req, res) {
+    const { id, currentPswd, newPswd, confirmPswd } = req.body;
+
+    try {
+      const currentUser = await this.model.findOne({ _id: id });
+
+      if (!currentUser) {
+        res.status(404).send("No such user.");
+        throw Error;
+      }
+
+      const isCorrectPswd = await bcrypt.compare(
+        currentPswd,
+        currentUser.password
+      );
+
+      console.log(isCorrectPswd);
+
+      if (!isCorrectPswd) {
+        res.status(403).send("Incorrect password.");
+        throw Error;
+      }
+
+      if (newPswd !== confirmPswd) {
+        res.status(400).send("Password not confirmed.");
+        throw Error;
+      }
+
+      const hashedPswd = await bcrypt.hashSync(newPswd, 8);
+      currentUser.password = hashedPswd;
+      await currentUser.save();
+      res.status(200).send("Password updated.");
     } catch (err) {
       const msg =
         "Something went wrong with the update, pls login and try again";

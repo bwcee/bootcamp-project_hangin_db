@@ -28,6 +28,7 @@ export default function userRouteFunc(controller) {
   userRouters.put("/email", controller.updateEmail.bind(controller));
   userRouters.put("/bio", controller.updateBio.bind(controller));
   userRouters.put("/postal", controller.updatePostal.bind(controller));
+  userRouters.put("/password", controller.updatePassword.bind(controller));
 
   return userRouters;
 }
