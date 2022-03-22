@@ -1,3 +1,5 @@
+import Chat from "../models/Chat.mjs";
+
 let usersOnline = {};
 
 export default function chatHandlers(io, socket) {
@@ -9,8 +11,10 @@ export default function chatHandlers(io, socket) {
     usersOnline[sender] = sender;
   };
 
-  const bdcastMsg = (data) => {
-    const { taskId } = data;
+  const bdcastMsg = async (data) => {
+    const { taskId, msg, receiver, sender } = data;
+    const storedMsg = await Chat.create({ sender, receiver, task: taskId, msg });
+    data.timeStamp = storedMsg.createdAt
     io.to(taskId).emit("bdcast_msg", data);
   };
 
@@ -20,3 +24,13 @@ export default function chatHandlers(io, socket) {
     usersOnline = {};
   });
 }
+
+// const chatSchema = new Schema(
+//   {
+//     sender: { type: Schema.Types.ObjectId, ref: "User" },
+//     receiver: { type: Schema.Types.ObjectId, ref: "User" },
+//     task: {type: Schema.Types.ObjectId, ref: "Task"},
+//     msg: { type: String, lowercase: true, trim: true },
+//   },
+//   { timestamps: true }
+// );
