@@ -13,7 +13,7 @@ export default class UserController extends BaseController {
     const { id } = req.params;
     try {
       const user = await this.model
-        .findById(id, "_id name email pic bio postal requests")
+        .findById(id, "_id name email pic bio postal requests payment")
         .exec();
       res.send(user);
     } catch (err) {

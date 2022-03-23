@@ -19,9 +19,9 @@ const userSchema = new Schema(
       trim: true,
     },
     password: { type: String, required: true, trim: true },
-    pic: { type: String }, 
+    pic: { type: String },
     bio: { type: String, lowercase: true, trim: true },
-    payment: { type: String, lowercase: true, trim: true },
+    payment: { type: String, trim: true },
     postal: {
       type: String,
       required: true,
