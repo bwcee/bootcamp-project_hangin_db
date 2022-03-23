@@ -4,7 +4,7 @@ const { Schema, model } = mongoose;
 /* from Mongoose docs, {VALUE} below will be replaced by value being validated */
 const taskSchema = new Schema(
   {
-    description: { type: String, required: true, lowercase: true, trim: true },
+    description: { type: String, required: true, trim: true },
     taskTag: {
       type: String,
       required: true,
@@ -24,7 +24,7 @@ const taskSchema = new Schema(
     },
     owner: { type: Schema.Types.ObjectId, ref: "User" }, //task owner id 
     partner: { type: Schema.Types.ObjectId, ref: "User" },//accountability partner id, default will be owner id or null? i.e. nil accountability partner
-    partnerAccepted: { type: String, lowerCase: true, trim: true },
+    partnerAccepted: { type: String, trim: true },
     endText: { type: String, lowercase: true, trim: true },//free text reward/penalty for completing/not completing task [optional field]
     financialPenalty: { type: Boolean },
     // endAmt: { type: Number },//penalty amt to pay if fail to complete task [optional field] - based on discussion with Justus, penalty amount to be applied directly from userProfile?

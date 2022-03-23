@@ -43,7 +43,7 @@ import taskRoutes from "./routes/taskRoutes.mjs";
 import TaskController from "./controllers/taskCtrl.mjs";
 
 import chatRoutes from "./routes/chatRoutes.mjs"
-import ChatController from "./controllers/chatCtrl.mjs" 
+import ChatController from "./controllers/chatCtrl.mjs"
 /* initiate/create instance of controllers & pass in models and SALT so can do jwt verification*/
 const signControl = new SignController(User, SALT);
 const userControl = new UserController(User, SALT);
@@ -69,11 +69,11 @@ app.use("/pics", express.static(__dirname + "/pics"));
 
 /* make use of defined routes */
 app.use("/", signRoutes(signControl));
-app.use("/task", taskRoutes(taskControl));
 /* middleware placed here so all routes below will haf to be verified first*/
 app.use(verifyToken());
 app.use("/chats", chatRoutes(chatControl));
 app.use("/user", userRoutes(userControl));
+app.use("/task", taskRoutes(taskControl));
 
 /* 
 1. set app to listen on the given port 
