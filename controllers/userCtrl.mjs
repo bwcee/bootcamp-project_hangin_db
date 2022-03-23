@@ -195,4 +195,47 @@ export default class UserController extends BaseController {
       this.errorHandler(err, msg, res);
     }
   }
+
+  async getPaymentSecret(req, res) {
+    const { customerId, methodId } = req.body;
+    console.log(customerId, methodId);
+
+    try {
+      const paymentIntent = await stripe.paymentIntents.create({
+        amount: 100,
+        currency: "sgd",
+        customer: customerId,
+        payment_method: methodId,
+        payment_method_types: ["card"],
+        confirm: true,
+      });
+
+      res.json({ client_secret: paymentIntent.client_secret });
+    } catch (err) {
+      // Error code will be authentication_required if authentication is needed
+      console.log("Error code is: ", err.code);
+      const paymentIntentRetrieved = await stripe.paymentIntents.retrieve(
+        err.raw.payment_intent.id
+      );
+      console.log("PI retrieved: ", paymentIntentRetrieved.id);
+    }
+  }
+
+  async getPaymentMethod(req, res) {
+    const { customerId } = req.body;
+    console.log(customerId);
+
+    try {
+      const paymentMethods = await stripe.paymentMethods.list({
+        customer: customerId,
+        type: "card",
+      });
+
+      res.json({ paymentMethods: paymentMethods.data });
+    } catch (err) {
+      const msg =
+        "Something went wrong with the update, pls login and try again";
+      this.errorHandler(err, msg, res);
+    }
+  }
 }
