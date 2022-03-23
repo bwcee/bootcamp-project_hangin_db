@@ -25,7 +25,7 @@ const taskSchema = new Schema(
     owner: { type: Schema.Types.ObjectId, ref: "User" }, //task owner id 
     partner: { type: Schema.Types.ObjectId, ref: "User" },//accountability partner id, default will be owner id or null? i.e. nil accountability partner
     partnerAccepted: { type: String, trim: true },
-    endText: { type: String, lowercase: true, trim: true },//free text reward/penalty for completing/not completing task [optional field]
+    endText: { type: String, trim: true },//free text reward/penalty for completing/not completing task [optional field]
     financialPenalty: { type: Boolean },
     // endAmt: { type: Number },//penalty amt to pay if fail to complete task [optional field] - based on discussion with Justus, penalty amount to be applied directly from userProfile?
     endApplied: { type: Boolean },//if chose to haf reward/penalty, haf those been applied 

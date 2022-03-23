@@ -1,6 +1,9 @@
 import BaseController from "./baseCtrl.mjs";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import Stripe from "stripe";
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 /* testing comment to make sure upating main will not cause changes in bw_copy */
 
 export default class HomeController extends BaseController {
@@ -35,6 +38,11 @@ export default class HomeController extends BaseController {
   async doSignUp(req, res) {
     const { name, email, password, postal } = req.body;
     try {
+      const customer = await stripe.customers.create({
+        email: email,
+        name: name,
+      });
+
       const hashedPass = bcrypt.hashSync(password, 8);
 
       const newUser = await this.model.create({
@@ -42,7 +50,9 @@ export default class HomeController extends BaseController {
         email,
         password: hashedPass,
         postal,
+        payment: customer.id,
       });
+
       /* can't think of a situation where newUser wld be null... but oh well... guess additional chk doesn't hurt */
       if (!newUser) {
         throw Error;

@@ -3,6 +3,9 @@ import fs from "fs";
 /* __dirname used for deleting old profile pics below. instead of redefining it, just import from index.mjs */
 import { __dirname } from "./../index.mjs";
 import bcrypt from "bcrypt";
+import Stripe from "stripe";
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 export default class UserController extends BaseController {
   constructor(model, salt) {
@@ -13,7 +16,7 @@ export default class UserController extends BaseController {
     const { id } = req.params;
     try {
       const user = await this.model
-        .findById(id, "_id name email pic bio postal requests")
+        .findById(id, "_id name email pic bio postal requests payment")
         .exec();
       res.send(user);
     } catch (err) {
@@ -169,6 +172,23 @@ export default class UserController extends BaseController {
       currentUser.password = hashedPswd;
       await currentUser.save();
       res.status(200).send("Password updated.");
+    } catch (err) {
+      const msg =
+        "Something went wrong with the update, pls login and try again";
+      this.errorHandler(err, msg, res);
+    }
+  }
+
+  async getClientSecret(req, res) {
+    const { customerId } = req.body;
+
+    try {
+      const setupIntent = await stripe.setupIntents.create({
+        customer: customerId,
+        payment_method_types: ["card"],
+      });
+
+      res.json({ client_secret: setupIntent.client_secret });
     } catch (err) {
       const msg =
         "Something went wrong with the update, pls login and try again";
