@@ -11,8 +11,8 @@ const chatSchema = new Schema(
   {
     sender: { type: Schema.Types.ObjectId, ref: "User" },
     receiver: { type: Schema.Types.ObjectId, ref: "User" },
-    task: {type: Schema.Types.ObjectId, ref: "Task"},
-    msg: { type: String, lowercase: true, trim: true },
+    task: { type: Schema.Types.ObjectId, ref: "Task" },
+    msg: { type: String, trim: true },
   },
   { timestamps: true }
 );
