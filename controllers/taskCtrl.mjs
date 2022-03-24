@@ -19,6 +19,7 @@ export default class TaskController extends BaseController {
       taskTag,
       rewardsPenalty,
       dateTime,
+      penaltyAmount
     } = req.body;
 
     console.log("backend data received", req.body);
@@ -35,6 +36,7 @@ export default class TaskController extends BaseController {
         endIndicated: false, // Default boolean is false for task completion to partner
         completed: false, //Default new task is false for task completion - self
         completion: dateTime, //DateTime for task completion
+        penaltyAmount
       });
       res.send(newTask);
     } catch (err) {

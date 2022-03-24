@@ -28,6 +28,7 @@ const taskSchema = new Schema(
     endText: { type: String, trim: true },//free text reward/penalty for completing/not completing task [optional field]
     financialPenalty: { type: Boolean },
     // endAmt: { type: Number },//penalty amt to pay if fail to complete task [optional field] - based on discussion with Justus, penalty amount to be applied directly from userProfile?
+    penaltyAmount: { type: Number },
     endApplied: { type: Boolean },//if chose to haf reward/penalty, haf those been applied 
     endIndicated: { type: Boolean },//owner indicated task is completed... this shld trigger something on accountability partner side...
     completed: { type: Boolean },//mark task as completed either by owner or accountability partner
