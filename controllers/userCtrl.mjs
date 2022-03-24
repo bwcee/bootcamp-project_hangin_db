@@ -198,7 +198,7 @@ export default class UserController extends BaseController {
 
   async getPaymentSecret(req, res) {
     const { customerId, methodId, centsAmount } = req.body;
-    console.log(customerId, methodId, centsAmount);
+    console.log("back rcvd ", customerId, methodId, centsAmount);
 
     try {
       const paymentIntent = await stripe.paymentIntents.create({
